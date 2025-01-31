@@ -4,6 +4,11 @@
 
 This repository contains my custom images for my own convenience.
 
-## List of Images
+## nvchecker
 
-- [nvchecker](https://github.com/lilydjwg/nvchecker)
+Upstream can be found at [lilydjwg/nvchecker](https://github.com/lilydjwg/nvchecker).
+
+Packages included in the image:
+
+- nvchecker: New version checker for software releases
+- py3-lxml: for the htmlparser source
