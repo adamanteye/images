@@ -12,3 +12,7 @@ Packages included in the image:
 
 - nvchecker: New version checker for software releases
 - py3-lxml: for the htmlparser source
+
+## caddy-webdav
+
+Built with module [webdav](https://caddyserver.com/docs/modules/http.handlers.webdav).

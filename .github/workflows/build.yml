@@ -19,7 +19,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        component: [ 'nvchecker' ]
+        component: [ 'nvchecker', 'caddy-webdav' ]
     steps:
       - uses: actions/checkout@v4
 
