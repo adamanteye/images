@@ -16,3 +16,7 @@ Packages included in the image:
 ## caddy-webdav
 
 Built with module [webdav](https://caddyserver.com/docs/modules/http.handlers.webdav).
+
+## debian-builer
+
+A base debian container for building deb packages.
