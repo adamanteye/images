@@ -26,7 +26,7 @@ jobs:
         with:
           keep-n-untagged: 0
           keep-n-tagged: 0
-          packages: ${{ github.actor }}/${{ matrix.component }}
+          packages: ${{ env.REGISTRY }}/${{ github.actor }}/${{ matrix.component }}
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: actions/checkout@v4
