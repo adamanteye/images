@@ -25,7 +25,6 @@ jobs:
         uses: dataaxiom/ghcr-cleanup-action@v1
         with:
           keep-n-untagged: 0
-          keep-n-tagged: 0
           package: ${{ matrix.component }}
           token: ${{ secrets.GITHUB_TOKEN }}
 
