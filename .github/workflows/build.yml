@@ -22,11 +22,11 @@ jobs:
         component: [ 'nvchecker', 'caddy-webdav', 'debian-builder' ]
     steps:
       - name: Delete All Old Images
-        uses: actions/delete-package-versions@v5
+        uses: dataaxiom/ghcr-cleanup-action@v1
         with:
-          package-name: ${{ env.REGISTRY }}/${{ github.actor }}/${{ matrix.component }}
-          package-type: 'docker'
-          min-versions-to-keep: 0
+          keep-n-untagged: 0
+          keep-n-tagged: 0
+          packages: ${{ github.actor }}/${{ matrix.component }}
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: actions/checkout@v4
