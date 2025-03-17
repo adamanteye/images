@@ -27,6 +27,7 @@ jobs:
           package-name: ${{ env.REGISTRY }}/${{ github.actor }}/${{ matrix.component }}
           package-type: 'docker'
           min-versions-to-keep: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: actions/checkout@v4
       # https://github.com/docker/setup-buildx-action
