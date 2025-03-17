@@ -26,7 +26,6 @@ jobs:
         with:
           package-name: ${{ env.REGISTRY }}/${{ github.actor }}/${{ matrix.component }}
           package-type: 'docker'
-          token: ${{ secrets.GITHUB_PAT }}
           min-versions-to-keep: 0
 
       - uses: actions/checkout@v4
