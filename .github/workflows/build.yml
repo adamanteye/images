@@ -26,7 +26,7 @@ jobs:
         with:
           keep-n-untagged: 0
           keep-n-tagged: 0
-          packages: ${{ env.REGISTRY }}/${{ github.actor }}/${{ matrix.component }}
+          name: ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ matrix.component }}
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: actions/checkout@v4
@@ -39,7 +39,7 @@ jobs:
         uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d # v3.0.0
         with:
           registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
+          username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
       # https://github.com/docker/metadata-action
