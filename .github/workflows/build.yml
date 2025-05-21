@@ -20,7 +20,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        component: [ 'nvchecker', 'caddy-webdav', 'debian-builder' ]
+        component: [ 'nvchecker', 'caddy-webdav', 'debian-builder', 'typst' ]
     steps:
       - name: Delete All Old Images
         uses: dataaxiom/ghcr-cleanup-action@v1
