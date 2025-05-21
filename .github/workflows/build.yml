@@ -8,6 +8,9 @@ on:
 
 jobs:
   call-docker-build:
+    permissions:
+      contents: read
+      packages: write
     uses: adamanteye/actions/.github/workflows/docker.yml@master
     with:
       name: ${{ github.ref_name }}
