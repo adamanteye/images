@@ -5,7 +5,7 @@ on:
   push:
     branches: [ "master" ]
     paths-ignore:
-      - '.github/**'
+      - '.github/dependabot.yml'
       - 'README.md'
 
 env:
@@ -28,6 +28,7 @@ jobs:
           delete-untagged: true
           package: ${{ matrix.component }}
           token: ${{ secrets.GITHUB_TOKEN }}
+        continue-on-error: true
 
       - uses: actions/checkout@v4
       # https://github.com/docker/setup-buildx-action
