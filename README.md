@@ -20,3 +20,7 @@ Built with module [webdav](https://caddyserver.com/docs/modules/http.handlers.we
 ## debian-builer
 
 A base debian container for building deb packages.
+
+## typst
+
+For compiling PDFs, see to [note](https://github.com/adamanteye/note).
