@@ -11,4 +11,4 @@ jobs:
     uses: adamanteye/actions/.github/workflows/docker.yml@master
     with:
       name: ${{ github.ref_name }}
-      owner: $ {{ github.repository_owner }}
+      owner: ${{ github.repository_owner }}
