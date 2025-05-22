@@ -15,7 +15,7 @@ RUN cd /root && apk add --no-cache bash make git fontconfig rsync && \
   rm 01_SourceHanSerif.ttc.zip && \
   # install sans font Source Han Sans
   wget https://github.com/adobe-fonts/source-han-sans/releases/download/2.004R/SourceHanSans.ttc.zip && \
-  unzip SourceHanSans.ttc.zip && mv SourceHanSans.ttc /usr/share/fonts \
+  unzip SourceHanSans.ttc.zip && mv SourceHanSans.ttc /usr/share/fonts && \
   rm SourceHanSans.ttc.zip && \
   fc-cache && \
   # install minify
