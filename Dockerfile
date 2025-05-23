@@ -1,5 +1,5 @@
-FROM alpine:latest
-RUN cd /root && apk add --no-cache bash make git fontconfig rsync && \
+FROM node:24-alpine3.20
+RUN cd /root && apk add --no-cache bash make git fontconfig && \
   # install typst
   wget https://github.com/typst/typst/releases/download/v0.13.1/typst-x86_64-unknown-linux-musl.tar.xz && \
   tar xaf typst-x86_64-unknown-linux-musl.tar.xz && \
@@ -19,6 +19,7 @@ RUN cd /root && apk add --no-cache bash make git fontconfig rsync && \
   rm SourceHanSans.ttc.zip && \
   fc-cache && \
   # install minify
-  wget https://github.com/tdewolff/minify/releases/download/v2.23.6/minify_linux_amd64.tar.gz && \
+  wget https://github.com/tdewolff/minify/releases/download/v2.23.8/minify_linux_amd64.tar.gz && \
   tar xaf minify_linux_amd64.tar.gz && \
-  mv minify /bin && rm minify_linux_amd64.tar.gz
+  mv minify /bin && rm minify_linux_amd64.tar.gz && \
+  rm -rf /root/*
