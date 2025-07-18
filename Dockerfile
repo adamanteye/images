@@ -1,5 +1,5 @@
 FROM debian:bookworm-slim
-RUN apt-get update -y && \
+RUN env && apt-get update -y && \
   apt-get install --no-install-recommends \
   build-essential dh-make scdoc wget ca-certificates \
   debmake vim tree \
