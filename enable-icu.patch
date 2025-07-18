@@ -1,0 +1,19 @@
+--- rules.orig	2025-07-18 05:53:00.297736850 +0000
++++ rules	2025-07-18 05:56:11.878741136 +0000
+@@ -24,7 +24,7 @@
+ export DEB_HOST_GNU_TYPE  ?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
+ export DEB_BUILD_GNU_TYPE ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
+ 
+-export LDFLAGS += -Wl,--as-needed
++export LDFLAGS += -Wl,--as-needed -L/usr/lib -licui18n -licuuc -licudata
+ ifeq ($(DEB_BUILD_GNU_TYPE), $(DEB_HOST_GNU_TYPE))
+   confflags += --build $(DEB_HOST_GNU_TYPE) --with-tcl=/usr/lib/$(DEB_HOST_MULTIARCH)/tcl8.6
+   export CROSS_BUILDING=no
+@@ -50,6 +50,7 @@
+ 	-DSQLITE_ENABLE_UPDATE_DELETE_LIMIT=1 \
+ 	-DSQLITE_ENABLE_LOAD_EXTENSION \
+ 	-DSQLITE_ENABLE_JSON1 \
++	-DSQLITE_ENABLE_ICU \
+ 	-DSQLITE_LIKE_DOESNT_MATCH_BLOBS \
+ 	-DSQLITE_THREADSAFE=1 \
+ 	-DSQLITE_ENABLE_FTS3_TOKENIZER=1 \
