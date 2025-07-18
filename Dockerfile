@@ -5,6 +5,7 @@ RUN env && apt-get update -y && \
   debmake vim tree \
   -y && \
   apt-get upgrade -y && \
-  useradd -m -s /usr/bin/bash debian
+  useradd -m -s /usr/bin/bash debian && \
+  echo "root:debian" | chpasswd
 USER debian
 WORKDIR /home/debian
