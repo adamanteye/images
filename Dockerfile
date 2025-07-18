@@ -1,4 +1,4 @@
-FROM php:8.4.7-apache-bookworm as build
+FROM php:8.4.7-apache-bookworm AS build
 
 RUN sed -i '1s/^Types: deb$/Types: deb deb-src/' /etc/apt/sources.list.d/debian.sources && \
   apt-get update && apt-get build-dep -y sqlite3 && \
@@ -10,7 +10,7 @@ RUN cd /root/sqlite3-3.40.1 && \
 
 ###############################################################################
 
-FROM php:8.4.7-apache-bookworm as runtime
+FROM php:8.4.7-apache-bookworm AS runtime
 COPY --from=build /root/sqlite3_3.40.1-2+deb12u1_amd64.deb /root/sqlite3_3.40.1-2+deb12u1_amd64.deb
 COPY --from=build /root/libsqlite3-0_3.40.1-2+deb12u1_amd64.deb /root/libsqlite3-0_3.40.1-2+deb12u1_amd64.deb
 COPY docker-entrypoint.sh /bin/docker-entrypoint.sh
