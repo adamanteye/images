@@ -28,3 +28,7 @@ For compiling PDFs, see to [note](https://github.com/adamanteye/note).
 ## php8-sqlite-icu
 
 Based on `php:8.4.7-apache-bookworm`, this package enables icu extension for sqlite.
+
+## physics-data
+
+Based on numpy with other utils.
