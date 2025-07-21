@@ -22,9 +22,5 @@ RUN pip install --no-cache-dir \
   'h5py==3.14.0' \
   'rpy2==3.6.1' \
   'pyarrow==21.0.0' \
-  'tqdm==4.67.1' \
-  && \
-  useradd -m -s /usr/bin/bash debian && \
-  echo "root:debian" | chpasswd
-USER debian
-WORKDIR /home/debian
+  'tqdm==4.67.1'
+ENTRYPOINT [ "/bin/bash" ]
