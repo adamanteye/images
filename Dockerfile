@@ -12,15 +12,13 @@ RUN sed -i \
   cmake gcc make wget curl ca-certificates \
   && \
   rm -rf /var/lib/apt/lists/* && \
-  Rscript -e 'install.packages("arrow")' && \
-  wget -q https://hep.tsinghua.edu.cn/~wuyy/debian/pool/main/p/python3-pyarrow/python3-pyarrow_20.0.0-1~w2d0_amd64.deb \
-  -O python3-pyarrow.deb && apt-get install -y --no-install-recommends \
-  ./python3-pyarrow.deb && rm ./python3-pyarrow.deb
+  Rscript -e 'install.packages("arrow")'
 RUN pip install --no-cache-dir \
   'numpy==2.3.1' \
   'lightgbm==4.6.0' \
   'h5py==3.14.0' \
   'rpy2==3.6.1' \
+  'rpy2-arrow==0.1.2' \
   'pyarrow==21.0.0' \
   'tqdm==4.67.1'
 ENTRYPOINT [ "/bin/bash" ]
