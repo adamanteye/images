@@ -21,4 +21,4 @@ RUN pip install --no-cache-dir --root-user-action ignore \
   'rpy2-arrow==0.1.2' \
   'pyarrow==21.0.0' \
   'tqdm==4.67.1'
-ENTRYPOINT [ "/bin/bash" ]
+ENTRYPOINT [ "/bin/bash", "-c" ]
