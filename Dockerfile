@@ -1,4 +1,4 @@
-FROM python:3.13.5-bookworm
+FROM python:3.11-bookworm
 RUN sed -i \
   's|http://deb.debian.org/debian-security|http://snapshot.debian.org/archive/debian-security/20250717T060459Z|g' \
   /etc/apt/sources.list.d/debian.sources && \
