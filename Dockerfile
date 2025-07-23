@@ -12,8 +12,8 @@ RUN sed -i \
   cmake gcc make wget curl ca-certificates \
   && \
   rm -rf /var/lib/apt/lists/* && \
-  Rscript -e 'install.packages("arrow")'
-RUN pip install --no-cache-dir \
+  Rscript -e 'install.packages("https://packagemanager.posit.co/cran/__linux__/bookworm/latest/src/contrib/arrow_20.0.0.2.tar.gz?r_version=4.2&arch=x86_64", repos=NULL, type="lib")'
+RUN pip install --no-cache-dir --root-user-action \
   'numpy==2.3.1' \
   'lightgbm==4.6.0' \
   'h5py==3.14.0' \
