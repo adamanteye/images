@@ -1,11 +1,5 @@
 FROM python:3.11-bookworm
-RUN sed -i \
-  's|http://deb.debian.org/debian-security|http://snapshot.debian.org/archive/debian-security/20250717T060459Z|g' \
-  /etc/apt/sources.list.d/debian.sources && \
-  sed -i \
-  's|http://deb.debian.org/debian|http://snapshot.debian.org/archive/debian/20250718T082802Z|g' \
-  /etc/apt/sources.list.d/debian.sources && \
-  apt-get update && apt-get upgrade -y && \
+RUN apt-get update && apt-get upgrade -y && \
   apt-get install -y --no-install-recommends \
   r-base r-base-dev \
   r-cran-mgcv r-cran-proto r-cran-argparser \
