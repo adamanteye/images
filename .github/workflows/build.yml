@@ -23,3 +23,4 @@ jobs:
       owner: ${{ github.repository_owner }}
       arch: ${{ matrix.arch }}
       rotate: false
+      label: "12"
