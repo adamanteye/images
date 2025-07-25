@@ -7,7 +7,7 @@ RUN apt-get update && apt-get upgrade -y && \
   && \
   rm -rf /var/lib/apt/lists/* && \
   sed -i 's/fpic/fPIC/g' /etc/R/Makeconf && \
-  LIBARROW_MINIMAL='false' Rscript -e 'install.packages("arrow")'
+  LIBARROW_BINARY='false' Rscript -e 'install.packages("arrow")'
 RUN pip install --no-cache-dir --root-user-action ignore \
   'numpy==2.3.1' \
   'lightgbm==4.6.0' \
