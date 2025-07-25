@@ -1,12 +1,12 @@
 FROM python:3.11-bookworm
-RUN sed -i 's/fpic/fPIC/g' /etc/R/Makeconf && \
-  apt-get update && apt-get upgrade -y && \
+RUN apt-get update && apt-get upgrade -y && \
   apt-get install -y --no-install-recommends \
   r-base r-base-dev \
   r-cran-mgcv r-cran-proto r-cran-argparser \
   cmake gcc make wget curl ca-certificates \
   && \
   rm -rf /var/lib/apt/lists/* && \
+  sed -i 's/fpic/fPIC/g' /etc/R/Makeconf && \
   LIBARROW_MINIMAL='false' Rscript -e 'install.packages("arrow")'
 RUN pip install --no-cache-dir --root-user-action ignore \
   'numpy==2.3.1' \

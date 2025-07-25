@@ -22,3 +22,4 @@ jobs:
       name: ${{ github.ref_name }}
       owner: ${{ github.repository_owner }}
       arch: ${{ matrix.arch }}
+      rotate: false
