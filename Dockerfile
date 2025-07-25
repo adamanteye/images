@@ -1,5 +1,5 @@
 FROM python:3.11-bookworm
-RUN sed -i 's/fpic/fPIC/g' /etc/R/Makeconf \
+RUN sed -i 's/fpic/fPIC/g' /etc/R/Makeconf && \
   apt-get update && apt-get upgrade -y && \
   apt-get install -y --no-install-recommends \
   r-base r-base-dev \
