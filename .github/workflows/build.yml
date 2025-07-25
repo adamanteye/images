@@ -10,10 +10,6 @@ on:
 
 jobs:
   call-docker-build:
-    strategy:
-      fail-fast: false
-      matrix:
-        arch: ["linux/amd64", "linux/arm64"]
     permissions:
       contents: read
       packages: write
@@ -21,6 +17,4 @@ jobs:
     with:
       name: ${{ github.ref_name }}
       owner: ${{ github.repository_owner }}
-      arch: ${{ matrix.arch }}
-      rotate: false
       label: "12"
