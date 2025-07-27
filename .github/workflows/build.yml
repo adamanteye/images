@@ -18,3 +18,4 @@ jobs:
       name: ${{ github.ref_name }}
       owner: ${{ github.repository_owner }}
       label: "12"
+      platforms: "linux/amd64,linux/arm64"
