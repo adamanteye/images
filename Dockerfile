@@ -34,3 +34,4 @@ RUN pip install --no-cache-dir --root-user-action ignore \
   'tqdm==4.67.1' \
   'matplotlib'
 ENTRYPOINT [ "/bin/bash", "-c" ]
+CMD ["/bin/bash"]
