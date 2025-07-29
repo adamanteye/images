@@ -23,7 +23,7 @@ RUN sed -i \
   && \
   rm -rf /var/lib/apt/lists/* && \
   sed -i 's/fpic/fPIC/g' /etc/R/Makeconf && \
-  Rscript -e 'Sys.setenv("LIBARROW_BINARY" = FALSE, "LIBARROW_MINIMAL" = FALSE);install.packages("arrow")'
+  Rscript -e 'Sys.setenv("LIBARROW_BINARY" = FALSE, "ARROW_WITH_ZSTD" = TRUE);install.packages("arrow")'
 RUN pip install --no-cache-dir --root-user-action ignore \
   'numpy==2.3.1' \
   'lightgbm==4.6.0' \
@@ -31,5 +31,6 @@ RUN pip install --no-cache-dir --root-user-action ignore \
   'rpy2==3.6.1' \
   'rpy2-arrow==0.1.2' \
   'pyarrow==21.0.0' \
-  'tqdm==4.67.1'
+  'tqdm==4.67.1' \
+  'matplotlib'
 ENTRYPOINT [ "/bin/bash", "-c" ]
