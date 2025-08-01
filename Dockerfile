@@ -24,18 +24,30 @@ RUN sed -i 's|http://deb.debian.org/debian-security|http://snapshot.debian.org/a
   libfreetype6-dev \
   libjpeg62-turbo-dev \
   libpng-dev \
-  libonig-dev && \
+  libonig-dev \
+  wget && \
   rm -rf /var/lib/apt/lists/*
 
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
   && docker-php-ext-install -j$(nproc) gd \
-  && docker-php-ext-install -j$(nproc) mbstring \
-  && docker-php-ext-configure mssql --with-libdir=lib/x86_64-linux-gnu && \
-  docker-php-ext-install -j$(nproc) mssql
+  && docker-php-ext-install -j$(nproc) mbstring
 
 RUN apt-get -y install /root/sqlite3.deb \
   /root/libsqlite3.deb \
   --no-install-recommends && rm -rf /root/*
+
+RUN curl -sSL -O https://packages.microsoft.com/config/debian/12/packages-microsoft-prod.deb && \
+  dpkg -i packages-microsoft-prod.deb && \
+  rm packages-microsoft-prod.deb && \
+  apt-get update && \
+  ACCEPT_EULA=Y apt-get install -y msodbcsql18 && \
+  ACCEPT_EULA=Y apt-get install -y mssql-tools18 && \
+  echo 'export PATH="$PATH:/opt/mssql-tools18/bin"' >> ~/.bashrc && \
+  apt-get install -y unixodbc-dev libgssapi-krb5-2 && \
+  rm -rf /var/lib/apt/lists/*
+
+RUN pecl install sqlsrv-5.12.0 && pecl install pdo_sqlsrv-5.12.0 && \
+  docker-php-ext-enable sqlsrv pdo_sqlsrv
 
 RUN cd /usr/src/ && tar xaf php.tar.xz
 
