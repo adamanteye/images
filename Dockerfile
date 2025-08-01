@@ -41,8 +41,6 @@ RUN curl -sSL -O https://packages.microsoft.com/config/debian/12/packages-micros
   rm packages-microsoft-prod.deb && \
   apt-get update && \
   ACCEPT_EULA=Y apt-get install -y msodbcsql18 && \
-  ACCEPT_EULA=Y apt-get install -y mssql-tools18 && \
-  echo 'export PATH="$PATH:/opt/mssql-tools18/bin"' >> ~/.bashrc && \
   apt-get install -y unixodbc-dev libgssapi-krb5-2 && \
   rm -rf /var/lib/apt/lists/*
 
