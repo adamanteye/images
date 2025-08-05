@@ -14,8 +14,8 @@ RUN cd /root/sqlite3-3.40.1 && \
 ###############################################################################
 
 FROM php:8.4.7-apache-bookworm AS runtime
-COPY --from=build /root/sqlite3*.deb /root/sqlite3.deb
-COPY --from=build /root/libsqlite3*.deb /root/libsqlite3.deb
+COPY --from=build /root/libsqlite3-0_3.40.1-2+deb12u1_amd64.deb /root/libsqlite3-0_3.40.1-2+deb12u1_amd64.deb
+COPY --from=build /root/sqlite3_3.40.1-2+deb12u1_amd64.deb /root/sqlite3_3.40.1-2+deb12u1_amd64.deb
 COPY docker-entrypoint.sh /bin/docker-entrypoint.sh
 RUN sed -i 's|http://deb.debian.org/debian-security|http://snapshot.debian.org/archive/debian-security/20250717T060459Z|g' /etc/apt/sources.list.d/debian.sources && \
   sed -i 's|http://deb.debian.org/debian|https://snapshot.debian.org/archive/debian/20250718T082802Z|g' /etc/apt/sources.list.d/debian.sources && \
@@ -32,8 +32,8 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
   && docker-php-ext-install -j$(nproc) gd \
   && docker-php-ext-install -j$(nproc) mbstring
 
-RUN apt-get -y install /root/sqlite3.deb \
-  /root/libsqlite3.deb \
+RUN apt-get -y install /root/libsqlite3-0_3.40.1-2+deb12u1_amd64.deb \
+  /root/sqlite3_3.40.1-2+deb12u1_amd64.deb \
   --no-install-recommends && rm -rf /root/*
 
 RUN curl -sSL -O https://packages.microsoft.com/config/debian/12/packages-microsoft-prod.deb && \
