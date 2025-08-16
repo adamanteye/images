@@ -1,14 +1,14 @@
-FROM rust:1-alpine3.20 AS build
+FROM rust:alpine AS build
 RUN apk upgrade --no-cache && apk --no-cache add musl-dev && \
   cd /root && \
   wget -q https://github.com/yeslogic/allsorts-tools/archive/refs/tags/0.12.0.tar.gz && \
   tar xaf 0.12.0.tar.gz && mv allsorts-tools-0.12.0/* . && \
   cargo build --release
 
-FROM node:24-alpine3.20 AS runtime
+FROM alpine AS runtime
 COPY --from=build /root/target/release/allsorts /bin
 RUN cd /root && apk upgrade --no-cache && \
-  apk add --no-cache bash make git fontconfig woff2 && \
+  apk add --no-cache bash make git fontconfig woff2 perl && \
   # install typst
   wget -q https://github.com/typst/typst/releases/download/v0.13.1/typst-x86_64-unknown-linux-musl.tar.xz && \
   tar xaf typst-x86_64-unknown-linux-musl.tar.xz && \
