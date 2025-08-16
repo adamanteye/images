@@ -1,25 +1,34 @@
-FROM node:24-alpine3.20
+FROM rust:1-alpine3.20 AS build
+RUN apk upgrade --no-cache && apk --no-cache add musl-dev && \
+  wget -q https://github.com/yeslogic/allsorts-tools/archive/refs/tags/0.12.0.tar.gz && \
+  tar xaf 0.12.0.tar.gz && mv allsorts-tools-0.12.0/* . && \
+  cargo build --release
+
+FROM node:24-alpine3.20 AS runtime
+COPY --from=build /root/target/release/allsorts /bin
 RUN cd /root && apk add --no-cache bash make git fontconfig && \
   # install typst
-  wget https://github.com/typst/typst/releases/download/v0.13.1/typst-x86_64-unknown-linux-musl.tar.xz && \
+  wget -q https://github.com/typst/typst/releases/download/v0.13.1/typst-x86_64-unknown-linux-musl.tar.xz && \
   tar xaf typst-x86_64-unknown-linux-musl.tar.xz && \
   mv typst-x86_64-unknown-linux-musl/typst /bin && \
-  rm -rf typst* && \
   # install mono font LxgwBrightCodeTC
-  wget https://github.com/lxgw/LxgwBright-Code/archive/refs/tags/v2.711.tar.gz && \
-  tar xaf v2.711.tar.gz && mkdir -p /usr/share/fonts && mv LxgwBright-Code-2.711/LxgwBrightCodeTC /usr/share/fonts && \
-  rm -rf v2.711.tar.gz Lxgw* && \
+  wget -q https://github.com/lxgw/LxgwBright-Code/archive/refs/tags/v2.720.tar.gz && \
+  tar xaf v2.720.tar.gz && mkdir -p /usr/share/fonts && mv LxgwBright-Code-2.720/LxgwBrightCodeTC /usr/share/fonts && \
   # install serif font Source Han Serif
-  wget https://github.com/adobe-fonts/source-han-serif/releases/download/2.003R/01_SourceHanSerif.ttc.zip && \
+  wget -q https://github.com/adobe-fonts/source-han-serif/releases/download/2.003R/01_SourceHanSerif.ttc.zip && \
   unzip 01_SourceHanSerif.ttc.zip && mv SourceHanSerif.ttc /usr/share/fonts && \
-  rm 01_SourceHanSerif.ttc.zip && \
   # install sans font Source Han Sans
-  wget https://github.com/adobe-fonts/source-han-sans/releases/download/2.004R/SourceHanSans.ttc.zip && \
+  wget -q https://github.com/adobe-fonts/source-han-sans/releases/download/2.004R/SourceHanSans.ttc.zip && \
   unzip SourceHanSans.ttc.zip && mv SourceHanSans.ttc /usr/share/fonts && \
-  rm SourceHanSans.ttc.zip && \
+  # install maple font
+  wget -q https://github.com/subframe7536/maple-font/releases/download/v7.5/MapleMono-NF-CN-unhinted.zip && \
+  unzip MapleMono-NF-CN-unhinted.zip && \
+  mv MapleMono-NF-CN-Regular.ttf /usr/share/fonts && \
+  # index new fonts
   fc-cache && \
   # install minify
-  wget https://github.com/tdewolff/minify/releases/download/v2.23.8/minify_linux_amd64.tar.gz && \
+  wget -q https://github.com/tdewolff/minify/releases/download/v2.23.11/minify_linux_amd64.tar.gz && \
   tar xaf minify_linux_amd64.tar.gz && \
   mv minify /bin && rm minify_linux_amd64.tar.gz && \
+  ## clean
   rm -rf /root/*
