@@ -8,7 +8,7 @@ RUN apk upgrade --no-cache && apk --no-cache add musl-dev && \
 FROM alpine AS runtime
 COPY --from=build /root/target/release/allsorts /bin
 RUN cd /root && apk upgrade --no-cache && \
-  apk add --no-cache bash make git fontconfig woff2 perl && \
+  apk add --no-cache bash make git fontconfig woff2 && \
   # install typst
   wget -q https://github.com/typst/typst/releases/download/v0.13.1/typst-x86_64-unknown-linux-musl.tar.xz && \
   tar xaf typst-x86_64-unknown-linux-musl.tar.xz && \
