@@ -1,4 +1,4 @@
 FROM ghcr.io/typst/typst:0.14.2
 RUN cd /root && apk upgrade --no-cache && \
-  apk add --no-cache bash make git file
+  apk add --no-cache bash make git file minify
 ENTRYPOINT [ "/bin/bash" ]
