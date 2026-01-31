@@ -1,0 +1,5 @@
+
+Welcome! You are logging in to a container inside a Kubernetes cluster.
+
+- To run background tasks, use tmux. No systemd or init process is running.
+- This container is ephemeral. Any changes outside /root will lose.
