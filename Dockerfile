@@ -6,7 +6,7 @@ RUN printf "%s\n" \
   && apk update \
   && apk add --no-cache \
     bind-tools ca-certificates curl fish git gnupg htop sudo bash \
-    iproute2 iputils kubectl make ncdu netcat-openbsd openssh-server \
+    iproute2 iputils kubectl make gdu netcat-openbsd openssh-server \
     rsync rustup tcpdump tmux tree unzip helix wget zip shadow \
   && echo "root:alpine" | chpasswd \
   && echo 'PubkeyAuthentication yes' >> /etc/ssh/sshd_config \
@@ -16,7 +16,6 @@ RUN printf "%s\n" \
   && echo '%wheel ALL=(ALL:ALL) NOPASSWD: ALL' >> /etc/sudoers \
   && rm -f /etc/ssh/ssh_host*
 COPY prepare.sh /root/prepare.sh
-COPY motd /etc/motd
 USER root
 EXPOSE 22
 WORKDIR /root
