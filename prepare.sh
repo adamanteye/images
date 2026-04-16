@@ -50,7 +50,6 @@ ssh-keygen -y -f /etc/ssh/ssh_host_ed25519_key \
 	>/etc/ssh/ssh_host_ed25519_key.pub
 
 ensure_user git /usr/bin/git-shell
-install -d -m 755 -o git -g git /home/git/repositories
 
 while IFS= read -r line; do
 	user="${line%%:*}"
