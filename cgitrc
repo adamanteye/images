@@ -1,0 +1,10 @@
+virtual-root=/
+scan-path=/home/git
+enable-index-owner=0
+enable-log-filecount=1
+enable-log-linecount=1
+root-title=Git
+root-desc=Repositories
+css=/cgit.css
+logo=/cgit.png
+favicon=/favicon.ico
