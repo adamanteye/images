@@ -1,6 +1,9 @@
 virtual-root=/
 scan-path=/home/git
-enable-index-owner=0
+enable-index-owner=1
+enable-http-clone=1
+enable-blame=1
+enable-commit-graph=1
 enable-log-filecount=1
 enable-log-linecount=1
 root-title=Git
@@ -8,3 +11,4 @@ root-desc=Repositories
 css=/cgit.css
 logo=/cgit.png
 favicon=/favicon.ico
+readme=:README.md
