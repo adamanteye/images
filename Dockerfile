@@ -8,7 +8,7 @@ RUN printf "%s\n" \
     bash bind-tools ca-certificates cgit curl fcgiwrap fish git gnupg \
     gdu helix htop iproute2 iputils kubectl make netcat-openbsd nginx \
     openssh-server rsync rustup shadow spawn-fcgi sudo tcpdump tmux \
-    tree unzip wget zip \
+    tree unzip wget zip clang mold openssh-client \
   && echo "root:alpine" | chpasswd \
   && echo 'PubkeyAuthentication yes' >> /etc/ssh/sshd_config \
   && echo 'PasswordAuthentication no' >> /etc/ssh/sshd_config \
