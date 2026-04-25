@@ -50,18 +50,18 @@ COPY web_release.py version_dir.py /opt/godot-build/
 
 WORKDIR /src/godot
 
-RUN set -eux; \
-  . /opt/emsdk/emsdk_env.sh; \
-  scons -j"${SCONS_JOBS}" platform=linuxbsd target=editor; \
-  scons -j"${SCONS_JOBS}" platform=web target=template_release \
-    profile=/opt/godot-build/web_release.py; \
-  VERSION_DIR="$(python3 /opt/godot-build/version_dir.py version.py)"; \
-  EDITOR_BIN="$(find bin -maxdepth 1 -type f -name 'godot.linuxbsd.editor.*' | head -n 1)"; \
-  mkdir -p /out/usr/local/bin "/out/root/.local/share/godot/export_templates/${VERSION_DIR}"; \
-  install -m 0755 "${EDITOR_BIN}" /out/usr/local/bin/godot; \
-  mv bin/godot.web.template_release.wasm32.zip \
-    "/out/root/.local/share/godot/export_templates/${VERSION_DIR}/web_release.zip"; \
-  printf '%s\n' "${VERSION_DIR}" > \
+RUN set -ux; \
+  . /opt/emsdk/emsdk_env.sh \
+  && scons -j"${SCONS_JOBS}" platform=linuxbsd target=editor \
+  && scons -j"${SCONS_JOBS}" platform=web target=template_release \
+    profile=/opt/godot-build/web_release.py \
+  && VERSION_DIR="$(python3 /opt/godot-build/version_dir.py version.py)" \
+  && EDITOR_BIN="$(find bin -maxdepth 1 -type f -name 'godot.linuxbsd.editor.*' | head -n 1)" \
+  && mkdir -p /out/usr/local/bin "/out/root/.local/share/godot/export_templates/${VERSION_DIR}" \
+  && install -m 0755 "${EDITOR_BIN}" /out/usr/local/bin/godot \
+  && mv bin/godot.web.template_release.wasm32.zip \
+    "/out/root/.local/share/godot/export_templates/${VERSION_DIR}/web_release.zip" \
+  && printf '%s\n' "${VERSION_DIR}" > \
     "/out/root/.local/share/godot/export_templates/${VERSION_DIR}/version.txt"
 
 FROM debian:trixie-slim
