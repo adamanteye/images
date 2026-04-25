@@ -75,7 +75,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update \
   && apt-get install -y --no-install-recommends \
-    binaryen nodejs npm \
+    binaryen nodejs npm make \
     brotli \
     ca-certificates \
     libasound2 \
