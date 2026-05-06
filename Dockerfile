@@ -5,7 +5,10 @@ ARG GENTOO_PREFIX_BOOTSTRAP_URL=https://gitweb.gentoo.org/repo/proj/prefix.git/p
 
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 
-ENV GENTOO_PREFIX_BOOTSTRAP_URL=${GENTOO_PREFIX_BOOTSTRAP_URL}
+ENV GENTOO_PREFIX_BOOTSTRAP_URL=${GENTOO_PREFIX_BOOTSTRAP_URL} \
+  LANG=en_US.UTF-8 \
+  LC_ALL=en_US.UTF-8 \
+  LANGUAGE=en_US:en
 
 RUN apt-get update \
   && apt-get install --no-install-recommends -y \
@@ -22,7 +25,7 @@ RUN apt-get update \
     htop \
     iproute2 \
     iputils-ping \
-    kubernetes-client \
+    locales \
     make \
     mold \
     netcat-openbsd \
@@ -30,14 +33,15 @@ RUN apt-get update \
     openssh-server \
     passwd \
     rsync \
-    rustup \
     sudo \
-    tcpdump \
     tmux \
     tree \
     unzip \
     wget \
     zip \
+  && printf '%s\n' 'en_US.UTF-8 UTF-8' >/etc/locale.gen \
+  && locale-gen \
+  && update-locale LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 LANGUAGE=en_US:en \
   && printf '%s\n' \
     '#!/bin/sh' \
     'set -eu' \
