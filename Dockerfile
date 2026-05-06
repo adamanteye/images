@@ -41,7 +41,8 @@ RUN apt-get update \
     zip \
   && printf '%s\n' 'en_US.UTF-8 UTF-8' >/etc/locale.gen \
   && locale-gen \
-  && update-locale LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 LANGUAGE=en_US:en \
+  && update-locale LANG=en_US.UTF-8 LANGUAGE=en_US:en \
+  && locale -a | grep -qx 'en_US.utf8' \
   && printf '%s\n' \
     '#!/bin/sh' \
     'set -eu' \

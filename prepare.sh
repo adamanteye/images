@@ -58,7 +58,7 @@ while IFS= read -r line; do
 	if [ "$user" = "git" ]; then
 		ensure_user "$user" /usr/bin/git-shell
 	else
-		ensure_user "$user" /usr/bin/fish wheel
+		ensure_user "$user" /bin/bash wheel
 	fi
 
 	install_authorized_keys "$user" "$keys"
