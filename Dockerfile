@@ -23,11 +23,12 @@ RUN apt-get update \
     git \
     gnupg \
     htop \
+    ripgrep \
+    npm \
     iproute2 \
     iputils-ping \
     locales \
     make \
-    mold \
     netcat-openbsd \
     openssh-client \
     openssh-server \
@@ -66,7 +67,8 @@ RUN apt-get update \
   && chmod 0440 /etc/sudoers.d/wheel \
   && rm -f /etc/ssh/ssh_host_* \
   && apt-get clean \
-  && rm -rf /var/lib/apt/lists/*
+  && rm -rf /var/lib/apt/lists/* \
+  && npm i -g @openai/codex
 
 COPY prepare.sh /root/prepare.sh
 COPY entrypoint.sh /root/entrypoint.sh
