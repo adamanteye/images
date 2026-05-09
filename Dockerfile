@@ -1,7 +1,6 @@
 FROM kalilinux/kali-rolling
 
-RUN sed -i 's|http://http.kali.org/kali|http://mirrors.tuna.tsinghua.edu.cn/kali|g' /etc/apt/sources.list \
-  && apt-get update \
+RUN apt-get update \
   && apt-get install -y nmap proxychains4 jq curl
 
 # Patch /usr/share/nmap/scripts/http-open-proxy.nse and socks-open-proxy.nse to add port 7890
