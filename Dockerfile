@@ -2,7 +2,7 @@ FROM archlinux:base
 RUN pacman -Syu --noconfirm \
   base-devel bash bind ca-certificates clang curl fish gdu git gnupg helix htop \
   iproute2 iputils kubectl make mold nodejs npm openbsd-netcat openssh \
-  rsync rust shadow sudo tcpdump devtools tmux tree unzip wget zip codex \
+  rsync rust shadow sudo tcpdump devtools tmux tree unzip wget zip openai-codex \
   && useradd --create-home build \
   && curl -fsSL 'https://aur.archlinux.org/cgit/aur.git/snapshot/paru.tar.gz' -o /tmp/paru.tar.gz \
   && tar -xzf /tmp/paru.tar.gz -C /tmp \
