@@ -16,7 +16,7 @@ ensure_user() {
 		usermod -a -G "$extra_group" "$user"
 	fi
 
-	# `useradd` creates a locked shadow entry on Alpine. Set a known
+	# `useradd` creates a locked shadow entry in this image. Set a known
 	# password so the account is unlocked; SSH password auth is still
 	# disabled by sshd_config unless that is changed separately.
 	printf '%s:%s\n' "$user" "alpine" | chpasswd
