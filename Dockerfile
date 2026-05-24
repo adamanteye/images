@@ -1,8 +1,10 @@
 FROM archlinux:base
-RUN pacman -Syu --noconfirm \
-  bash bind ca-certificates clang curl fish gdu git gnupg helix htop \
-  iproute2 iputils kubectl make mold nodejs npm openbsd-netcat openssh \
-  rsync rustup shadow sudo tcpdump devtools paru tmux tree unzip wget zip \
+RUN printf '\n[archlinuxcn]\nServer = https://mirrors.tuna.tsinghua.edu.cn/archlinuxcn/$arch\n' >>/etc/pacman.conf \
+  && pacman -Syu --noconfirm archlinuxcn-keyring \
+  && pacman -S --noconfirm \
+    bash bind ca-certificates clang curl fish gdu git gnupg helix htop \
+    iproute2 iputils kubectl make mold nodejs npm openbsd-netcat openssh \
+    rsync rustup shadow sudo tcpdump devtools paru tmux tree unzip wget zip \
   && npm install -g @openai/codex \
   && npm cache clean --force \
   && echo "root:alpine" | chpasswd \
