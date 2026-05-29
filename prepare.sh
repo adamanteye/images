@@ -49,17 +49,11 @@ chmod 600 /etc/ssh/ssh_host_ed25519_key
 ssh-keygen -y -f /etc/ssh/ssh_host_ed25519_key \
 	>/etc/ssh/ssh_host_ed25519_key.pub
 
-ensure_user git /usr/bin/git-shell
-
 while IFS= read -r line; do
 	user="${line%%:*}"
 	keys="${line#*:}"
 
-	if [ "$user" = "git" ]; then
-		ensure_user "$user" /usr/bin/git-shell
-	else
-		ensure_user "$user" /usr/bin/fish wheel
-	fi
+	ensure_user "$user" /bin/bash wheel
 
 	install_authorized_keys "$user" "$keys"
 done < <(printf '%s\n' "${PREDEFINED_USER:-}" | grep -oE '[^:;]+:[^;]+' || true)
