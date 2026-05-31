@@ -5,7 +5,7 @@ RUN printf "%s\n" \
   >/etc/apk/repositories \
   && apk update \
   && apk add --no-cache \
-    bash bind-tools ca-certificates cgit curl fcgiwrap fish git gnupg \
+    bash bind-tools ca-certificates cgit curl fcgiwrap fish git gnupg ripgrep \
     gdu helix htop iproute2 iputils kubectl make netcat-openbsd nginx \
     openssh-server rsync rustup shadow spawn-fcgi sudo tcpdump tini tmux \
     tree unzip wget zip clang mold openssh-client \
