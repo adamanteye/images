@@ -3,6 +3,6 @@ COPY source-han-serif/ /usr/share/fonts/adobe-source-han-serif/
 COPY texgyrepagella-math.otf /usr/share/fonts/OTF/texgyrepagella-math.otf
 RUN cd /root && apk upgrade --no-cache \
   && apk add --no-cache bash make git file fontconfig minify lilypond perl \
-    curl tar \
+    curl tar py3-fonttools py3-brotli \
   && fc-cache -f
 ENTRYPOINT ["/bin/bash"]
