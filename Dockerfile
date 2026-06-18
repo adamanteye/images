@@ -1,22 +1,35 @@
-FROM debian:trixie-slim
+FROM debian:bookworm-slim AS john-builder
+ARG JTR_REPO=https://github.com/openwall/john.git
+ARG JTR_BRANCH=bleeding-jumbo
 
-ENV BIRD_CONTROL_SOCKET=/host/run/bird/bird.ctl
+RUN apt-get update && apt-get install -y --no-install-recommends \
+  ca-certificates \
+  git \
+  build-essential \
+  libssl-dev \
+  zlib1g-dev \
+  pkg-config \
+  libgmp-dev \
+  libpcap-dev \
+  libbz2-dev \
+  && rm -rf /var/lib/apt/lists/*
 
-RUN set -eux; \
-  apt-get update; \
-  apt-get install -y --no-install-recommends \
-    bird2 \
-    ca-certificates \
-    python3 \
-    python3-maxminddb; \
-  rm -rf /var/lib/apt/lists/*; \
-  printf '%s\n' \
-    '#!/bin/sh' \
-    'set -eu' \
-    'exec birdc -s "${BIRD_CONTROL_SOCKET:-/host/run/bird/bird.ctl}" "$@"' \
-    > /usr/local/bin/birdc-host; \
-  chmod +x /usr/local/bin/birdc-host
+RUN git clone --depth 1 --branch "${JTR_BRANCH}" "${JTR_REPO}" /jtr \
+  && cd /jtr/src \
+  && ./configure \
+  && make -s clean \
+  && make -sj"$(nproc)"
 
-USER root
-WORKDIR /root
-CMD ["birdc-host"]
+FROM debian:bookworm-slim
+RUN apt-get update && apt-get install -y --no-install-recommends \
+  ca-certificates \
+  libssl3 \
+  zlib1g \
+  libgmp10 \
+  libpcap0.8 \
+  libbz2-1.0 \
+  libgomp1 \
+  && rm -rf /var/lib/apt/lists/*
+
+COPY --from=john-builder /jtr /jtr
+ENV JOHN_PATH=/jtr/run/john
