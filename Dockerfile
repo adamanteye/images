@@ -1,12 +1,22 @@
-FROM kalilinux/kali-rolling
+FROM debian:trixie-slim
 
-RUN apt-get update \
-  && apt-get install -y nmap proxychains4 jq curl
+ENV BIRD_CONTROL_SOCKET=/host/run/bird/bird.ctl
 
-# Patch /usr/share/nmap/scripts/http-open-proxy.nse and socks-open-proxy.nse to add port 7890
-RUN sed -i 's/{8000, 8080}/{8000, 8080, 7890}/g' /usr/share/nmap/scripts/http-open-proxy.nse \
-  && sed -i 's/{1080, 9050}/{1080, 9050, 7890}/g' /usr/share/nmap/scripts/socks-open-proxy.nse
+RUN set -eux; \
+  apt-get update; \
+  apt-get install -y --no-install-recommends \
+    bird2 \
+    ca-certificates \
+    python3 \
+    python3-maxminddb; \
+  rm -rf /var/lib/apt/lists/*; \
+  printf '%s\n' \
+    '#!/bin/sh' \
+    'set -eu' \
+    'exec birdc -s "${BIRD_CONTROL_SOCKET:-/host/run/bird/bird.ctl}" "$@"' \
+    > /usr/local/bin/birdc-host; \
+  chmod +x /usr/local/bin/birdc-host
 
+USER root
 WORKDIR /root
-
-CMD ["nmap", "--version"]
+CMD ["birdc-host"]
