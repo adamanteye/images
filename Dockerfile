@@ -39,18 +39,50 @@ RUN set -eux; \
     'set -eu' \
     'flags=" $(sed -n "s/^flags[[:space:]]*: //p" /proc/cpuinfo 2>/dev/null | head -n 1) "' \
     'has_flag() { printf "%s\n" "$flags" | grep -qw "$1"; }' \
-    'if has_flag avx512bw && has_flag avx512vl && has_flag avx512dq && [ -x /opt/john/avx512/john ]; then' \
-    '  exec /opt/john/avx512/john "$@"' \
+    'check_variant_flags() {' \
+    '  variant="$1"' \
+    '  missing=0' \
+    '  shift' \
+    '  for flag in "$@"; do' \
+    '    echo "john: checking CPU flag for $variant: $flag" >&2' \
+    '    if has_flag "$flag"; then' \
+    '      echo "john: detected CPU flag for $variant: $flag" >&2' \
+    '    else' \
+    '      echo "john: missing CPU flag for $variant: $flag" >&2' \
+    '      missing=1' \
+    '    fi' \
+    '  done' \
+    '  return "$missing"' \
+    '}' \
+    'if check_variant_flags avx512 avx512bw avx512vl avx512dq; then' \
+    '  if [ -x /opt/john/avx512/john ]; then' \
+    '    echo "john: selected SIMD variant: avx512 (flags: avx512bw avx512vl avx512dq)" >&2' \
+    '    exec /opt/john/avx512/john "$@"' \
+    '  fi' \
+    '  echo "john: variant avx512 is unavailable" >&2' \
     'fi' \
-    'if has_flag avx2 && [ -x /opt/john/avx2/john ]; then' \
-    '  exec /opt/john/avx2/john "$@"' \
+    'if check_variant_flags avx2 avx2; then' \
+    '  if [ -x /opt/john/avx2/john ]; then' \
+    '    echo "john: selected SIMD variant: avx2 (flags: avx2)" >&2' \
+    '    exec /opt/john/avx2/john "$@"' \
+    '  fi' \
+    '  echo "john: variant avx2 is unavailable" >&2' \
     'fi' \
-    'if has_flag avx && [ -x /opt/john/avx/john ]; then' \
-    '  exec /opt/john/avx/john "$@"' \
+    'if check_variant_flags avx avx; then' \
+    '  if [ -x /opt/john/avx/john ]; then' \
+    '    echo "john: selected SIMD variant: avx (flags: avx)" >&2' \
+    '    exec /opt/john/avx/john "$@"' \
+    '  fi' \
+    '  echo "john: variant avx is unavailable" >&2' \
     'fi' \
-    'if has_flag sse2 && [ -x /opt/john/sse2/john ]; then' \
-    '  exec /opt/john/sse2/john "$@"' \
+    'if check_variant_flags sse2 sse2; then' \
+    '  if [ -x /opt/john/sse2/john ]; then' \
+    '    echo "john: selected SIMD variant: sse2 (flags: sse2)" >&2' \
+    '    exec /opt/john/sse2/john "$@"' \
+    '  fi' \
+    '  echo "john: variant sse2 is unavailable" >&2' \
     'fi' \
+    'echo "john: selected SIMD variant: generic (flags: none)" >&2' \
     'exec /opt/john/generic/john "$@"' \
     > /usr/local/bin/john; \
   chmod +x /usr/local/bin/john
