@@ -14,6 +14,7 @@ RUN apt-get update \
     build-essential \
     ca-certificates \
     curl \
+    rsync \
     git \
     openssh-client \
     openssh-server \
