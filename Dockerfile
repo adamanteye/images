@@ -1,71 +1,22 @@
 FROM debian:trixie-slim
 
-ARG DEBIAN_FRONTEND=noninteractive
-ARG PUBLIC_INBOX_RELEASE_URL=https://public-inbox.org/public-inbox.git/snapshot/public-inbox-2.1.0.tar.gz
+ENV DEBIAN_FRONTEND=noninteractive
 
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
-
-WORKDIR /usr/src/public-inbox
-# Mirrors the Debian dependency set from INSTALL/install/deps.perl
-# for essential + optional features, plus the local build toolchain.
-RUN apt-get update \
+RUN printf 'postfix postfix/main_mailer_type select No configuration\n' | debconf-set-selections \
+  && apt-get update \
   && apt-get install -y --no-install-recommends \
-    bash \
-    build-essential \
     ca-certificates \
-    curl \
-    rsync \
-    git \
-    openssh-client \
-    openssh-server \
-    passwd \
-    perl \
-    pkg-config \
-    sqlite3 \
-    sudo \
-    xapian-tools \
-    libbsd-resource-perl \
-    libdbd-sqlite3-perl \
-    libemail-address-xs-perl \
-    libgit2-dev \
-    libhighlight-perl \
-    libinline-c-perl \
-    liblinux-inotify2-perl \
-    libmail-imapclient-perl \
-    libnet-server-perl \
-    libparse-recdescent-perl \
-    libplack-middleware-reverseproxy-perl \
-    libplack-perl \
-    libsearch-xapian-perl \
-    libtimedate-perl \
-    liburi-perl \
-    libxapian-dev \
-  && curl -fsSL "${PUBLIC_INBOX_RELEASE_URL}" -o /tmp/public-inbox.tar.gz \
-  && tar -xzf /tmp/public-inbox.tar.gz --strip-components=1 -C /usr/src/public-inbox \
-  && rm /tmp/public-inbox.tar.gz \
-  && perl Makefile.PL \
-  && make -j"$(nproc)" \
-  && make install \
-  && test -x /usr/local/bin/public-inbox-httpd \
-  && perl -MPublicInbox::Search -e 1 \
-  && groupadd -f wheel \
-  && echo "root:debian" | chpasswd \
-  && install -d -m 0755 /run/sshd \
-  && printf '%s\n' \
-    'PubkeyAuthentication yes' \
-    'PasswordAuthentication no' \
-    'PermitRootLogin yes' \
-    >>/etc/ssh/sshd_config \
-  && echo '%wheel ALL=(ALL:ALL) NOPASSWD: ALL' >/etc/sudoers.d/wheel \
-  && chmod 0440 /etc/sudoers.d/wheel \
-  && rm -f /etc/ssh/ssh_host_* \
-  && apt-get clean \
-  && rm -rf /usr/src/public-inbox /var/lib/apt/lists/*
+    dovecot-core \
+    dovecot-imapd \
+    dovecot-lmtpd \
+    postfix \
+    tini \
+  && groupadd -g 5000 vmail \
+  && useradd -u 5000 -g 5000 -d /var/vmail -s /usr/sbin/nologin vmail \
+  && mkdir -p /usr/share/mail-stack \
+  && tar -C /var/spool -cf /usr/share/mail-stack/postfix-spool.tar postfix \
+  && rm -rf /var/lib/apt/lists/*
 
-COPY prepare.sh /root/prepare.sh
-COPY entrypoint.sh /root/entrypoint.sh
+COPY entrypoint.sh /usr/local/sbin/mail-entrypoint
 
-USER root
-EXPOSE 22
-WORKDIR /var/lib/public-inbox
-CMD ["/root/entrypoint.sh"]
+ENTRYPOINT ["/usr/bin/tini", "--", "/usr/local/sbin/mail-entrypoint"]
