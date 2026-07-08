@@ -1,0 +1,13 @@
+#!/bin/sh
+set -eu
+
+maildir="${1:?usage: maildir-deliver MAILDIR}"
+host="$(hostname)"
+stamp="$(date +%s)"
+name="${stamp}.$$.$host"
+tmp="${maildir}/tmp/${name}"
+new="${maildir}/new/${name}"
+
+umask 077
+cat >"$tmp"
+mv "$tmp" "$new"
