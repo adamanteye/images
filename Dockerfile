@@ -9,6 +9,7 @@ RUN printf 'postfix postfix/main_mailer_type select No configuration\n' | debcon
     dovecot-core \
     dovecot-imapd \
     dovecot-lmtpd \
+    libsasl2-modules \
     postfix \
     tini \
   && groupadd -g 5000 vmail \
