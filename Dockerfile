@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1.7
 
-ARG COLLABST_REF=815ffd3534f71e31d7d33f1092b7b57eb83c0e6c
+ARG COLLABST_REF=dcba249896a9935d0775db49ef1a0f3e3de1f555
 
 FROM node:20-slim AS source
 ARG COLLABST_REF
