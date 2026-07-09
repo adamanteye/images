@@ -24,7 +24,9 @@ COPY --from=source /src/backend/ /app/
 RUN uv sync --frozen
 
 COPY --from=frontend-builder /frontend/build /app/frontend-dist
-RUN chmod +x /app/scripts/entrypoint.prod.sh
+RUN sed -i 's/--host 0\.0\.0\.0/--host ::/' /app/scripts/entrypoint.prod.sh \
+  && grep -q -- '--host ::' /app/scripts/entrypoint.prod.sh \
+  && chmod +x /app/scripts/entrypoint.prod.sh
 
 EXPOSE 8000
 ENTRYPOINT ["/app/scripts/entrypoint.prod.sh"]
