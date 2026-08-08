@@ -1,37 +1,42 @@
-FROM python:3.11-bookworm
-RUN sed -i \
-  's|http://deb.debian.org/debian-security|http://snapshot.debian.org/archive/debian-security/20250717T060459Z|g' \
-  /etc/apt/sources.list.d/debian.sources && \
-  sed -i \
-  's|http://deb.debian.org/debian|http://snapshot.debian.org/archive/debian/20250718T082802Z|g' \
-  /etc/apt/sources.list.d/debian.sources && \
-  echo "Acquire::Check-Valid-Until false;" | tee -a /etc/apt/apt.conf.d/no-check-valid-until && \
-  apt-get update && apt-get upgrade -y && \
-  apt-get install -y --no-install-recommends \
-  r-base r-base-dev r-cran-mgcv r-cran-proto r-cran-argparser \
-  cmake gcc make wget curl ca-certificates autoconf ccache \
-  clang g++ gdb git \
-  libbenchmark-dev libboost-filesystem-dev libboost-system-dev libbrotli-dev \
-  libbz2-dev libc-ares-dev libcurl4-openssl-dev libgflags-dev \
-  libgmock-dev libgoogle-glog-dev libgrpc++-dev libidn2-dev libkrb5-dev \
-  libldap-dev liblz4-dev libnghttp2-dev libprotobuf-dev libprotoc-dev \
-  libpsl-dev libre2-dev librtmp-dev libsnappy-dev libsqlite3-dev \
-  libssh-dev libssh2-1-dev libssl-dev libthrift-dev libutf8proc-dev \
-  libxml2-dev libzstd-dev llvm-dev ninja-build nlohmann-json3-dev \
-  npm pkg-config protobuf-compiler-grpc python3-dev python3-pip \
-  python3-venv rapidjson-dev rsync tzdata zlib1g-dev \
-  && \
-  rm -rf /var/lib/apt/lists/* && \
-  sed -i 's/fpic/fPIC/g' /etc/R/Makeconf && \
-  Rscript -e 'Sys.setenv("LIBARROW_BINARY" = FALSE, "ARROW_WITH_ZSTD" = TRUE);install.packages("arrow")'
-RUN pip install --no-cache-dir --root-user-action ignore \
-  'numpy==2.3.1' \
-  'lightgbm==4.6.0' \
-  'h5py==3.14.0' \
-  'rpy2==3.6.1' \
-  'rpy2-arrow==0.1.2' \
-  'pyarrow==21.0.0' \
-  'tqdm==4.67.1' \
-  'matplotlib'
-ENTRYPOINT [ "/bin/bash", "-c" ]
-CMD ["/bin/bash"]
+FROM ghcr.io/typst/typst:0.15.1
+RUN cd /root && apk upgrade --no-cache \
+  && apk add --no-cache bash make git file fontconfig minify lilypond perl \
+    bzip2 curl tar unzip py3-fonttools py3-brotli
+RUN set -eux; \
+  font_tmp="$(mktemp -d)"; \
+  source_han_dir=/usr/share/fonts/adobe-source-han-serif; \
+  source_han_archive="$font_tmp/SourceHanSerifOTC.zip"; \
+  mkdir -p "$source_han_dir" /usr/share/fonts/OTF /usr/share/fonts/TTF \
+    /usr/share/licenses/source-han-serif /usr/share/licenses/ttf-arphic-ukai; \
+  curl -fL --retry 3 \
+    https://github.com/adobe-fonts/source-han-serif/releases/download/2.003R/03_SourceHanSerifOTC.zip \
+    -o "$source_han_archive"; \
+  printf '%s  %s\n' \
+    b3586f26d8a4c05ee9e956739e68d6cbd33f7378dc87a1e20eab5358ce22402a \
+    "$source_han_archive" | sha256sum -c -; \
+  unzip -j "$source_han_archive" '*.ttc' -d "$source_han_dir"; \
+  unzip -j "$source_han_archive" LICENSE.txt \
+    -d /usr/share/licenses/source-han-serif; \
+  test "$(find "$source_han_dir" -type f -name '*.ttc' | wc -l)" -eq 7; \
+  curl -fL --retry 3 \
+    https://mirrors.ctan.org/fonts/tex-gyre-math/opentype/texgyrepagella-math.otf \
+    -o /usr/share/fonts/OTF/texgyrepagella-math.otf; \
+  echo '1f9e010f60e947d0e925910009b2ea85ad54edc7cefb106f8cdefb9ffd1d5f2f  /usr/share/fonts/OTF/texgyrepagella-math.otf' \
+    | sha256sum -c -; \
+  ukai_archive="$font_tmp/fonts-arphic-ukai.tar.bz2"; \
+  curl -fL --retry 3 \
+    https://deb.debian.org/debian/pool/main/f/fonts-arphic-ukai/fonts-arphic-ukai_0.2.20080216.2.orig.tar.bz2 \
+    -o "$ukai_archive"; \
+  printf '%s  %s\n' \
+    b4968d73519f4f8747e85548fb85d21b665da1bf1ba900a7c499976e6a8ae3d2 \
+    "$ukai_archive" | sha256sum -c -; \
+  tar -xjf "$ukai_archive" -C "$font_tmp" \
+    fonts-arphic-ukai-0.2.20080216.2/ukai.ttc \
+    fonts-arphic-ukai-0.2.20080216.2/license/english/ARPHICPL.TXT; \
+  mv "$font_tmp/fonts-arphic-ukai-0.2.20080216.2/ukai.ttc" \
+    /usr/share/fonts/TTF/ukai.ttc; \
+  mv "$font_tmp/fonts-arphic-ukai-0.2.20080216.2/license/english/ARPHICPL.TXT" \
+    /usr/share/licenses/ttf-arphic-ukai/COPYING; \
+  rm -rf "$font_tmp"; \
+  fc-cache -f
+ENTRYPOINT ["/bin/bash"]
