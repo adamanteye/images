@@ -3,6 +3,8 @@ RUN pacman -Syu --noconfirm \
   base-devel bash bind ca-certificates clang curl fish gdu git gnupg helix htop \
   iproute2 ripgrep iputils kubectl make mold nodejs npm openbsd-netcat openssh chromium \
   rsync rust shadow sudo tcpdump devtools tmux tree unzip wget zip openai-codex \
+  typst \
+  && cd /usr/local/bin && ln -s ../../bin/helix hx \
   && useradd --create-home build \
   && curl -fsSL 'https://aur.archlinux.org/cgit/aur.git/snapshot/paru.tar.gz' -o /tmp/paru.tar.gz \
   && tar -xzf /tmp/paru.tar.gz -C /tmp \
