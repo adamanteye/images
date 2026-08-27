@@ -16,10 +16,10 @@ ensure_user() {
 		usermod -a -G "$extra_group" "$user"
 	fi
 
-	# `useradd` creates a locked shadow entry in this image. Set a known
+	# `useradd` may create a locked shadow entry. Set a known
 	# password so the account is unlocked; SSH password auth is still
 	# disabled by sshd_config unless that is changed separately.
-	printf '%s:%s\n' "$user" "alpine" | chpasswd
+	printf '%s:%s\n' "$user" "debian" | chpasswd
 }
 
 install_authorized_keys() {
@@ -58,7 +58,7 @@ while IFS= read -r line; do
 	if [ "$user" = "git" ]; then
 		ensure_user "$user" /usr/bin/git-shell
 	else
-		ensure_user "$user" /usr/bin/fish wheel
+		ensure_user "$user" /bin/bin/fish wheel
 	fi
 
 	install_authorized_keys "$user" "$keys"

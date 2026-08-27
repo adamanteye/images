@@ -1,4 +1,8 @@
 #!/bin/bash
 set -euo pipefail
+
 /root/prepare.sh
-/usr/bin/sshd -D -e
+
+mkdir -p /run/sshd
+
+exec /usr/sbin/sshd -D -e
