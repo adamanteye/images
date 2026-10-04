@@ -16,5 +16,4 @@ jobs:
     with:
       name: ${{ github.ref_name }}
       owner: ${{ github.repository_owner }}
-      label: "0.1.0"
       platforms: "linux/amd64"
