@@ -16,7 +16,9 @@ X11Forwarding yes
 X11UseLocalhost yes
 XAuthLocation /usr/bin/xauth
 AllowAgentForwarding no
-AllowTcpForwarding no
+# OpenSSH also gates remote Unix sockets on AllowTcpForwarding.
+AllowTcpForwarding remote
+PermitListen none
 AllowStreamLocalForwarding yes
 PermitTunnel no
 GatewayPorts no
