@@ -14,6 +14,9 @@ if [ ! -s /etc/ssh/authorized_keys/wine ]; then
 	exit 1
 fi
 
+install -d -m 0700 -o wine -g wine /home/wine/.ssh
+install -m 0600 -o wine -g wine /etc/ssh/authorized_keys/wine /home/wine/.ssh/authorized_keys
+
 if ! runuser -u wine -- mkdir -p /data/prefix /data/downloads; then
 	echo 'The PVC at /data must be writable by UID/GID 1000.' >&2
 	exit 1
