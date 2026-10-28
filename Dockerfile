@@ -8,14 +8,6 @@ RUN pacman -Syu --noconfirm \
   unzip wget zip openai-codex \
   typst less opencode \
   && cd /usr/local/bin && ln -s ../../bin/helix hx \
-  && useradd --create-home build \
-  && curl -fsSL 'https://aur.archlinux.org/cgit/aur.git/snapshot/paru.tar.gz' -o /tmp/paru.tar.gz \
-  && tar -xzf /tmp/paru.tar.gz -C /tmp \
-  && chown -R build:build /tmp/paru \
-  && su build -c 'cd /tmp/paru && makepkg --noconfirm --needed --cleanbuild' \
-  && pacman -U --noconfirm /tmp/paru/paru-*.pkg.tar.zst \
-  && rm -rf /tmp/paru /tmp/paru.tar.gz /home/build \
-  && userdel build \
   && echo "root:alpine" | chpasswd \
   && echo 'PubkeyAuthentication yes' >>/etc/ssh/sshd_config \
   && echo 'PasswordAuthentication no' >>/etc/ssh/sshd_config \
